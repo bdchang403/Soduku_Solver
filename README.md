@@ -4,6 +4,12 @@ A modern, premium Sudoku Solver built with Python and Django.
 
 ![Sudoku Solver Interface](assets/screenshot.png)
 
+## Demo
+| Step 1: Input | Step 2: Solve | Step 3: Result |
+|:---:|:---:|:---:|
+| <img src="assets/demo_step_1.png" width="200" /> | <img src="assets/demo_step_2.png" width="200" /> | <img src="assets/demo_step_3.png" width="200" /> |
+
+
 ## Overview
 This application provides a sleek, dark-themed interface for solving Sudoku puzzles. It uses a backtracking algorithm to find the solution for any valid Sudoku grid instantly.
 
