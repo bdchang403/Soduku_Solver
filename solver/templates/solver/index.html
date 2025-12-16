@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Solver - Premium Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --bg-body: #0F172A;
+            --bg-card: #1E293B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border-color: #334155;
+            --grid-border: #475569;
+            --grid-thick-border: #94A3B8;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            max-width: 90vw;
+            width: fit-content;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #818CF8, #C084FC);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .sudoku-grid {
+            border: 3px solid var(--grid-thick-border);
+            display: inline-block;
+            background-color: var(--grid-border);
+        }
+
+        .row {
+            display: flex;
+        }
+
+        .cell {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 500;
+            border: 1px solid var(--grid-border);
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            outline: none;
+            transition: background-color 0.2s;
+        }
+
+        .cell:focus {
+            background-color: #334155;
+            border-color: var(--primary);
+            z-index: 10;
+            position: relative;
+        }
+
+        /* 3x3 Block Borders */
+        .cell:nth-child(3n) {
+            border-right: 2px solid var(--grid-thick-border);
+        }
+
+        .cell:last-child {
+            border-right: none;
+            /* Let the container border handle the edge */
+        }
+
+        .row:nth-child(3n) .cell {
+            border-bottom: 2px solid var(--grid-thick-border);
+        }
+
+        .row:last-child .cell {
+            border-bottom: none;
+        }
+
+        /* Input styling specifically */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .actions {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .btn-solve {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+        }
+
+        .btn-solve:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-clear {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-clear:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Sudoku Solver</h1>
+        <p class="subtitle">Enter your puzzle and let the algorithm do the rest.</p>
+
+        <form method="post" action="{% url 'index' %}">
+            {% csrf_token %}
+            <div class="sudoku-grid">
+
+
+                {# Correct approach for the loop #}
+                {% for row in board %}
+                <div class="row">
+                    {% for cell in row %}
+                    <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1"
+                        name="cell_{{ forloop.parentloop.counter0 }}_{{ forloop.counter0 }}" class="cell"
+                        value="{% if cell != 0 %}{{ cell }}{% endif %}" autocomplete="off">
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="actions">
+                <a href="{% url 'index' %}" class="btn-clear"
+                    style="text-decoration:none; display:inline-flex; align-items:center;">Clear Board</a>
+                <button type="submit" class="btn-solve">Solve Puzzle</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
